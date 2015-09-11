@@ -1,5 +1,5 @@
 {
-    "name": "ServiceManager",
+    "name": "SirCameron/ServiceManager",
     "description": "A simple class to manage config and dependencies pretty nicely",
     "type": "library",
     "authors": [
