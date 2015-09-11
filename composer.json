@@ -1,0 +1,18 @@
+{
+    "name": "ServiceManager",
+    "description": "A simple class to manage config and dependencies pretty nicely",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Cameron McAlpine"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
+}
