@@ -3,8 +3,9 @@ namespace SirCameron;
 
 class ServiceManager{
 	
+	private static $config;
 	private $_config;
-	private $_services = [];
+	private static $services = [];
 
 	public function __construct( $config ){
 
@@ -24,10 +25,14 @@ class ServiceManager{
 	}
 
 
+	public static function setConfig($config){
+		self::$config = $config;
+	}
 
-	public function getConfig(){
 
-		$config =& $this->_config;
+	public static function config(){
+
+		$config =& self::$config;
 
 		$keys = func_get_args();
 		foreach ($keys as $key){
@@ -50,14 +55,14 @@ class ServiceManager{
 		$arguments = func_get_args();
 		$hash = md5(serialize($arguments));
 		
-		if ( isset($this->_services[$hash]) ){
-			return $this->_services[$hash];
+		if ( isset(self::$services[$hash]) ){
+			return self::$services[$hash];
 		}
 
 		$factory = $this->getConfig('ServiceManager','factories',$serviceName);
 		if (is_callable($factory) ){
 			$arguments[0] = $this;
-			return $this->_services[$hash] = call_user_func_array($factory, $arguments);
+			return self::$services[$hash] = call_user_func_array($factory, $arguments);
 		}
 
 		throw new \RuntimeException( sprintf('No service found: %s',$serviceName) );
