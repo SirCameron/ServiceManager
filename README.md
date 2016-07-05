@@ -7,18 +7,41 @@ The manager uses config to define services. Services are keyed by a hash of the 
 your config passed into the ServiceManager constructor will look like this:
 
 ```PHP
-'ServiceManager' => array(
-    'additionalConfigs' => array(
-        __DIR__.'/template.config.php' // load in and combine more configs.
+$config = array(
+    'myConfig'=>array(
+        'foo'=>'bar'
     ),
-    'factories' => array(
-        'eventConsumer' => function( $serviceManager, $eventName = null ) { // using this service with different eventName arguments will create different instances of this service
-            if ($eventName == null) {
-                $eventName = __NAMESPACE__;
+    'ServiceManager' => array(
+        'additionalConfigs' => array(
+            __DIR__.'/template.config.php' // load in and combine more configs.
+        ),
+        'factories' => array(
+            'myService' => function( $serviceManager, $someArg = null ) { // using this service with different someArg arguments will create different instances of this service
+                if ($someArg == null) {
+                    $someArg = __NAMESPACE__; // if you want to set some default...
+                }
+                $config = $serviceManager->getConfig('myService', $someArg);
+                return new YourService($config);
             }
-            $config = array_merge($serviceManager->getConfig('events', 'consumer', 'default'), $serviceManager->getConfig('events', 'consumer', $eventName));
-            return new YourService($config);
-        }
+        )
     )
-)
+);
+```
+
+Pass that config into ServiceManager
+
+```PHP
+$manager = new ServiceManager($config); // for factories, ServiceManager looks within the data at the 'ServiceManager' key of the config.
+```
+
+Get your service:
+
+```PHP
+$service = $manager->get('myService');
+```
+
+The service manager also manages config, allowing you to easily get config like so:
+```PHP
+$manager->getConfig('myConfig','foo'); // bar
+$manager->getConfig('myConfig','foobooo'); // NULL
 ```
