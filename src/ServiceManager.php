@@ -2,7 +2,7 @@
 namespace SirCameron;
 
 class ServiceManager{
-	
+
 	private static $config;
 	private $_config;
 	private static $services = [];
@@ -30,7 +30,7 @@ class ServiceManager{
 	}
 
 
-	public static function config(){
+	public static function getConfig(){
 
 		$config =& self::$config;
 
@@ -54,7 +54,7 @@ class ServiceManager{
 
 		$arguments = func_get_args();
 		$hash = md5(serialize($arguments));
-		
+
 		if ( isset(self::$services[$hash]) ){
 			return self::$services[$hash];
 		}
