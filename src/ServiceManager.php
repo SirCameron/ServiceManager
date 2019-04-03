@@ -12,13 +12,13 @@ class ServiceManager{
 		if ( !is_array($config) ){
 			throw new \RuntimeException('Incorrect config');
 		}
-		$this->_config = $config;
+		self::$config = $config;
 
 		if (is_array($addConfigs=$this->getConfig('ServiceManager','additionalConfigs'))){
 			foreach ($addConfigs as $addConfig){
 				if (file_exists($addConfig)){
 					$addConfig = include($addConfig);
-					$this->_config = array_merge($this->_config,$addConfig);
+					self::$config = array_merge(self::$config,$addConfig);
 				}
 			}
 		}
@@ -62,6 +62,7 @@ class ServiceManager{
 		$factory = self::getConfig('ServiceManager','factories',$serviceName);
 		if (is_callable($factory) ){
 			$arguments = array_slice($arguments, 1);
+			array_unshift($arguments, self);
 			return self::$services[$hash] = call_user_func_array($factory, $arguments);
 		}
 
