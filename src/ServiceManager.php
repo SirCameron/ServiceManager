@@ -50,7 +50,7 @@ class ServiceManager{
 
 
 
-	public function get( $serviceName ){
+	public static function get( $serviceName ){
 
 		$arguments = func_get_args();
 		$hash = md5(serialize($arguments));
