@@ -55,7 +55,7 @@ class ServiceManager{
 		$arguments = func_get_args();
 		$hash = md5(serialize($arguments));
 
-		if ( isset(self::$services[$hash]) ){
+		if ( isset(self::$services[$hash]) &&  self::$services[$hash] !== null ){
 			return self::$services[$hash];
 		}
 
