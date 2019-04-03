@@ -59,7 +59,7 @@ class ServiceManager{
 			return self::$services[$hash];
 		}
 
-		$factory = self::config('ServiceManager','factories',$serviceName);
+		$factory = self::getConfig('ServiceManager','factories',$serviceName);
 		if (is_callable($factory) ){
 			$arguments = array_slice($arguments, 1);
 			return self::$services[$hash] = call_user_func_array($factory, $arguments);
